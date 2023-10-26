@@ -1,29 +1,29 @@
 import openai
 from pymongo import MongoClient
 
-from config.key import API_KEY, MONGODB_URL
+from pprint import pprint
 
-openai.api_key = API_KEY
+from config.key import API_KEY2, MONGODB_URL
 
-prompt = 'Quelle version de GPT est en train de tourner ?'
+def main():
 
-client = MongoClient(MONGODB_URL)
-db = client.scoobyDB
-my_collection = db.arthur
+    openai.api_key = API_KEY2
 
-# dummy = {
-#     "user": "arthur",
-#     "role": "programmer"
-# }
+    prompt = 'J’essaie de savoir combien coûte l’accès à l’API d’openAI. Sois bref par ce que je suis pauvre, s’il te plait'
 
-# my_collection.insert_one(dummy)
+    client = MongoClient(MONGODB_URL)
+    db = client.scoobyDB
+    my_collection = db.arthur
 
-print(my_collection.find()[0])
+    resp = my_collection.find()
 
+    # print(resp['choices'][0]['message']['content'])
+    for r in resp:
+        pprint(r)
 
-# response = openai.ChatCompletion.create(
-#     model = 'gpt-3.5-turbo',
-#     messages = [{'role': 'user', 'content': prompt}]
-# )
+    # response = openai.ChatCompletion.create(
+    #     model = 'gpt-3.5-turbo',
+    #     messages = [{'role': 'user', 'content': prompt}]
+    # )
 
-# print(response)
+    # my_collection.insert_one(response)
