@@ -1,11 +1,13 @@
 import openai
 from pymongo import MongoClient
 
-openai.api_key = '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'
+from config.key import API_KEY, MONGODB_URL
+
+openai.api_key = API_KEY
 
 prompt = 'Quelle version de GPT est en train de tourner ?'
 
-client = MongoClient("mongodb://mongoscooby.ownedge.fr:27017/")
+client = MongoClient(MONGODB_URL)
 db = client.scoobyDB
 my_collection = db.arthur
 
