@@ -1,29 +1,42 @@
 import openai
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 
 from pprint import pprint
+import streamlit as st
 
-from config.key import API_KEY2, MONGODB_URL
+from config.key import MONGODB_URL, API_KEY2
+
+# def main():
+
+#     openai.api_key = API_KEY2
+
+#     prompt = 'écris moi le code python d’un jeu SNAKE avec pygame'
+
+#     response = openai.ChatCompletion.create(
+#         model = 'gpt-3.5-turbo',
+#         messages = [{'role': 'user', 'content': prompt}]
+#     )
+
+#     client = MongoClient(MONGODB_URL)
+#     db = client.scoobyDB
+#     my_collection = db.arthur
+
+#     my_collection.insert_one(response)
+
+#     resp = my_collection.find()
+
+#     for r in resp:
+#         pprint(r)
 
 def main():
-
-    openai.api_key = API_KEY2
-
-    prompt = 'J’essaie de savoir combien coûte l’accès à l’API d’openAI. Sois bref par ce que je suis pauvre, s’il te plait'
-
+    
     client = MongoClient(MONGODB_URL)
     db = client.scoobyDB
-    my_collection = db.arthur
+    artable = db.arthur
 
-    resp = my_collection.find()
+    code = artable.find({"_id": ObjectId('653aa3dc8b5ef6fb42830417')})
 
-    # print(resp['choices'][0]['message']['content'])
-    for r in resp:
-        pprint(r)
+    res = code[0]['choices'][0]['message']['content']
 
-    # response = openai.ChatCompletion.create(
-    #     model = 'gpt-3.5-turbo',
-    #     messages = [{'role': 'user', 'content': prompt}]
-    # )
-
-    # my_collection.insert_one(response)
+    st.write(res)
