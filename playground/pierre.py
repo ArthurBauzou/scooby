@@ -7,6 +7,7 @@ import os
 import re
 import pymongo  
 from pymongo import MongoClient  
+import pandas as pd
 
 playground_dir = os.path.dirname(os.path.abspath(__file__))
 config_dir = os.path.join(playground_dir, "../config")
@@ -45,7 +46,6 @@ if st.button("Générer le code"):
         conclusion = get_code(user_input)
         st.subheader("Code généré :")
         st.write(conclusion)
-        print(type(conclusion))
         
         # document JSON test
         data_to_insert = {
@@ -64,14 +64,26 @@ if st.button("Générer le code"):
 
     else:
         st.warning("Veuillez entrer du texte pour générer du texte.")
+    
 
 
+# Affichage d'une liste de documents depuis la collection MongoDB
+documents = collection.find({}, {"user_input": 1, "conclusion": 1, "_id": 0})  # "_id": 0 exclut l'ID
 
-    # Affichage d'une liste de documents depuis la collection MongoDB
-    documents = collection.find()
-    st.write("Liste de documents dans la collection :")
-    for doc in documents:
-        st.write(doc)
+st.write("Liste des questions et des réponses :")
+
+doc_list = list(documents)  # Convertissez le curseur en une liste
+if doc_list:
+    import pandas as pd
+    df = pd.DataFrame(doc_list)
+
+    # Renommer les colonnes
+    df = df.rename(columns={"user_input": "Question", "conclusion": "Reponse"})
+
+    st.dataframe(df)  # Affichez les données sous forme de tableau
+else:
+    st.write("Aucun document trouvé dans la collection.")
+
 
 
 # Contenu de la variable fonction
