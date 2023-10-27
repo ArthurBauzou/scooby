@@ -17,6 +17,7 @@ st.set_page_config(
         initial_sidebar_state="collapsed"
 )
 
+
 if 'user' not in st.session_state:
     st.session_state.user = 'anonyme'
 

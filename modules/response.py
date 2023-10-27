@@ -31,9 +31,12 @@ def get_response(req):
     st.write("Votre demande : ")
     st.write(req)
     
-    documents = collection.find({}, {"_id": req,"request": 1, "raw.choices.message.content": 1,}) 
+    # Filtrez les documents avec l'ID égal à req
+    documents = collection.find({"_id": req}, {"request": 1, "raw.choices.message.content": 1}) 
     doc_list = list(documents)  # Convertissez le curseur en une liste
     st.write(doc_list)
+    
+
 
 
        
