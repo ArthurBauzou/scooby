@@ -23,7 +23,7 @@ data = {
 
 # def main():
 
-#     openai.api_key = API_KEY2
+#     openai.api_key = API_KEY
 
 #     prompt = 'écris moi le code python d’un jeu SNAKE avec pygame'
 
