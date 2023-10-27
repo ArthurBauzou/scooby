@@ -23,13 +23,15 @@ openai.api_key = API_KEY
 # Configurez la connexion MongoDB
 client = MongoClient(MONGODB_URL)
 db = client.scoobyDB
-collection = db.pierre
+collection = db.requests
 
-# Affichage d'une liste de documents depuis la collection MongoDB
-documents = collection.find({}, {"user_input": 1, "conclusion": 1, "_id": 0})  # "_id": 0 exclut l'ID
+
+ 
 def get_response(req):
     st.write("Votre demande : ")
     st.write(req)
+    
+    documents = collection.find({}, {"_id": req,"request": 1, "raw.choices.message.content": 1,}) 
     doc_list = list(documents)  # Convertissez le curseur en une liste
     st.write(doc_list)
 
