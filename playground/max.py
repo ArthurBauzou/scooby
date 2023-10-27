@@ -18,6 +18,7 @@ conclusion = "ceci est une réponse de test"
 data_to_insert = {
     'user_input': "ceci est un test",
     'conclusion': "ceci est une réponse de test"
+    'utilisateur': ":max"
 }
 
 # Insérer le document
