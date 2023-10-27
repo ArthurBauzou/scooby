@@ -5,17 +5,17 @@ import os
 playground_dir = os.path.dirname(os.path.abspath(__file__))
 config_dir = os.path.join(playground_dir, "../config")
 sys.path.append(config_dir)
-from key import API_KEY2, MONGODB_URL
+from key import API_KEY, MONGODB_URL
 
 client = MongoClient(MONGODB_URL)
 db = client.scoobyDB
-collection = db.max
+collection = db.requests
 
 # Titre de la page
 st.title("lecture collection MongoDB")
 
 # Affichage d'une liste de documents depuis la collection MongoDB
-documents = collection.find({"utilisateur": "max"})
+documents = collection.find()
 st.write("Liste de documents dans la collection 1 :")
 for doc in documents:
     st.write(doc)
