@@ -1,5 +1,5 @@
 import streamlit as st
 
-def get_response(req):
-    st.write("Votre demande : ")
-    st.write(req)
+def get_response(id):
+    st.write("ID inséré : ")
+    st.write(id)

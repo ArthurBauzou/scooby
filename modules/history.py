@@ -2,7 +2,7 @@ import streamlit as st
 from pymongo import MongoClient
 import sys
 import os
-from config.key import API_KEY2, MONGODB_URL
+from config.key import MONGODB_URL
 
 client = MongoClient(MONGODB_URL)
 db = client.scoobyDB
