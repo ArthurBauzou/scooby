@@ -8,20 +8,7 @@ client = MongoClient(MONGODB_URL)
 db = client.scoobyDB
 collection = db.requests
 
-# def get_user_history(user):
-#     st.write(f"Historique de {user}")
-#     pass
 
-#     # champ_a_afficher = "user_input"
-#     # valeurs_distinctes = collection.distinct(champ_a_afficher)
-    
-#     # for valeur in valeurs_distinctes:
-#     #     st.write(valeurs_distinctes)
-
-#     documents = collection.find({"utilisateur": user})
-#     st.write()
-#     for doc in documents:
-#         st.write(doc["user_input"])
 
 def get_user_history(user):
     st.write(f"Historique de {user}")
