@@ -9,19 +9,15 @@ from key import API_KEY2, MONGODB_URL
 
 client = MongoClient(MONGODB_URL)
 db = client.scoobyDB
-my_collection = db.max
+my_collection = db.pierre
 
 
 
 # document JSON test
 data_to_insert = {
-    'user_input': "ceci est un test",
-<<<<<<< HEAD
-    'conclusion': "ceci est une réponse de test"
-    'utilisateur': ":max"
-=======
-    'conclusion': "conclusion"
->>>>>>> 4642cc3ff826054b3ff5a7363c7cadb48897ef00
+    'user_input': "ceci est un tes3",
+    'conclusion': "ceci est une réponse de test",
+    'utilisateur': "pierre"
 }
 
 # Insérer le document

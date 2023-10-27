@@ -12,19 +12,23 @@ import pandas as pd
 playground_dir = os.path.dirname(os.path.abspath(__file__))
 config_dir = os.path.join(playground_dir, "../config")
 sys.path.append(config_dir)
+from key import API_KEY, MONGODB_URL
+from config.key import API_KEY, MONGODB_URL
 from key import api_key, MONGODB_URL
 
 
 
-
-
 # Clé API
-openai.api_key = api_key
+openai.api_key = API_KEY
 
 # Configurez la connexion MongoDB
 client = MongoClient(MONGODB_URL)
 db = client.scoobyDB
 collection = db.pierre
+
+
+
+
 
 def get_code(user_prompt):
     messages = [{"role": "user", "content": user_prompt}]
@@ -50,7 +54,8 @@ if st.button("Générer le code"):
         # document JSON test
         data_to_insert = {
             'user_input': user_input,
-            'conclusion': conclusion
+            'conclusion': conclusion,
+            'utilisateur': "pierre"
         }
 
         # Insérez le document dans la collection MongoDB
