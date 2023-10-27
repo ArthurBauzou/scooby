@@ -13,7 +13,6 @@ def get_post(id):
     st.session_state.page = 'response'
 
 def get_user_history(user):
-    st.write(f"Historique de {user}")
 
     documents = collection.find({"user": user})
 

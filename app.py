@@ -11,10 +11,8 @@ def dummy():
     if request:
         st.session_state.request = request
         set_page('loading')
-    elif request != '':
-        print('nooooo')
     else:
-        print('no')
+        print('user : ', st.session_state.user)
 
 def reset_response():
     print('fire reset')
@@ -69,7 +67,6 @@ if st.session_state.page == 'prompt' :
 elif st.session_state.page == 'loading':
     
     st.header(st.session_state.request)
-    print(st.session_state.user)
     with st.spinner('Wait for it...'):
         st.session_state.response = submit_request(st.session_state.request, st.session_state.user)
         set_page('response')
