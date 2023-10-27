@@ -36,10 +36,6 @@ def get_response(req):
     doc_list = list(documents)  # Convertissez le curseur en une liste
     st.write(doc_list)
     
-
-
-
-       
         
     # Contenu de la variable fonction
     fonction = "def add(a, b):\n    return a + b"
