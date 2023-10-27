@@ -25,58 +25,16 @@ client = MongoClient(MONGODB_URL)
 db = client.scoobyDB
 collection = db.pierre
 
-
-
-
+# Affichage d'une liste de documents depuis la collection MongoDB
+documents = collection.find({}, {"user_input": 1, "conclusion": 1, "_id": 0})  # "_id": 0 exclut l'ID
 def get_response(req):
     st.write("Votre demande : ")
     st.write(req)
-    
-        # Bouton pour générer la conclusion
-    if st.button("Générer le code"):
-        if user_input:
-            conclusion = get_code(user_input)
-            st.subheader("Code généré :")
-            st.write(conclusion)
-            
-            
-            # document JSON test
-            data_to_insert = {
-                'user_input': user_input,
-                'conclusion': conclusion,
-                'utilisateur': "pierre"
-            }
-
-            # Insérez le document dans la collection MongoDB
-            insert_result = collection.insert_one(data_to_insert)
-
-            # Vérifiez l'insertion
-            if insert_result.inserted_id:
-                st.success(f'Données insérées avec succès. ID du document inséré : {insert_result.inserted_id}')
-            else:
-                st.error("Échec de l'insertion des données")
-
-        else:
-            st.warning("Veuillez entrer du texte pour générer du texte.")
-        
-
-
-    # Affichage d'une liste de documents depuis la collection MongoDB
-    documents = collection.find({}, {"user_input": 1, "conclusion": 1, "_id": 0})  # "_id": 0 exclut l'ID
-
-    st.write("Liste des questions et des réponses :")
-
     doc_list = list(documents)  # Convertissez le curseur en une liste
-    if doc_list:
-        import pandas as pd
-        df = pd.DataFrame(doc_list)
+    st.write(doc_list)
 
-        # Renommer les colonnes
-        df = df.rename(columns={"user_input": "Question", "conclusion": "Reponse"})
 
-        st.dataframe(df)  # Affichez les données sous forme de tableau
-    else:
-        st.write("Aucun document trouvé dans la collection.")
+       
         
     # Contenu de la variable fonction
     fonction = "def add(a, b):\n    return a + b"
@@ -84,3 +42,5 @@ def get_response(req):
     # Créer un éditeur de code
     st.subheader("Éditeur de Code :")
     code = st_ace(height=200, value=fonction, language='python', theme='pastel_on_dark', key="ace_editor")
+    
+        
