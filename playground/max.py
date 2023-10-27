@@ -11,13 +11,12 @@ client = MongoClient(MONGODB_URL)
 db = client.scoobyDB
 my_collection = db.max
 
-user_input = "ceci est un test"
-conclusion = "ceci est une réponse de test"
+
 
 # document JSON test
 data_to_insert = {
     'user_input': "ceci est un test",
-    'conclusion': "ceci est une réponse de test"
+    'conclusion': "conclusion"
 }
 
 # Insérer le document
