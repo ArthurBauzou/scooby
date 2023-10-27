@@ -1,4 +1,5 @@
 import streamlit as st
+import time
 
 from modules.history import get_user_history
 from modules.response import get_response
@@ -6,103 +7,80 @@ from modules.request import openai_request
 from modules.bdd import write_request
 
 #fonctions
+def dummy():
+    if request:
+        st.session_state.request = request
+        set_page('loading')
+    elif request != '':
+        print('nooooo')
+    else:
+        print('no')
+
+def reset_response():
+    print('fire reset')
+    del(st.session_state.response)
+    set_page('prompt')
+
 def submit_request(value, user):
     response = openai_request(value)
     inserted_id = write_request(value, response, user)
-    st.session_state.request = inserted_id
+    return inserted_id
+
+def set_page(state):
+    st.session_state.page = state
+
+def set_user(user):
+    st.session_state.user = user
 
 #config de la page
 st.set_page_config(
-        page_title="AWESOME O",
-        initial_sidebar_state="collapsed"
+        page_title="kill all humans",
+        # initial_sidebar_state="collapsed"
 )
-
 
 if 'user' not in st.session_state:
     st.session_state.user = 'anonyme'
+if 'page' not in st.session_state:
+    st.session_state.page = 'prompt'
+if 'request' not in st.session_state:
+    st.session_state.request = ''
+if 'response' not in st.session_state:
+    st.session_state.state = ''
 
 ## SIDEBAR : CONNEXION ET HISTORIQUE ##
 login = st.sidebar.container()
 with login:
     user = st.text_input('Entrez votre nom', st.session_state.user)
     if user:
+        set_user(user)
         st.header('Historique')
         get_user_history(user)
 
+#TITLE
+st.title('Mon Copain Robot 💖')
 
 ## PAGE DES REQUETES (ACCUEIL) ##
-if 'request' not in st.session_state:
+if st.session_state.page == 'prompt' :
 
-    header = st.container()
-    with header:
-        col1, col2, col3 = st.columns([1,3,1])
+    request = st.text_area('Entrez la description d’un programme')
+    st.button('AU TRAVAIL, ESCLAVE ROBOT', on_click=dummy())
 
-        with col1:
-            st.image("./static/rob_left.jpg")
-
-        with col2:
-            #génération du titre
-            title_text = 'Mon Copain Robot'
-            title_html = f'''
-            <h1 style="
-                text-align: center; 
-                margin-top: 80px; 
-                vertical-align: bottom;
-            ">{title_text}</h1>'''
-
-            st.write(title_html, unsafe_allow_html=True)
-
-        with col3:
-            st.image("./static/rob_right.jpg")
-
-    request_frame = st.container()
-    with request_frame:
-
-        # génération de l’en-tête
-        req_text = "Demandez à notre super robot de créer le programme de vos rêves !"
-        req_html = f'''
-            <p style="
-                margin-top: 64px;
-                margin-bottom: 32px; 
-                ext-align: center; 
-                ont-size: 22px;
-            ">{req_text}</p>'''
-        
-        st.write(req_html, unsafe_allow_html=True)
-
-        # text-area pour entrer la requête
-        request = st.text_area('powered by openapi')
-
-        # bouton de confirmation
-        col1, col2, col3 = st.columns(3)
-        with col2:
-            if request : 
-                st.button('AU TRAVAIL, ESCLAVE ROBOT', on_click=submit_request(request, st.session_state.user)) # activation du bouton submit
-            else :  
-                st.button('AU TRAVAIL, ESCLAVE ROBOT', disabled=True) # sinon le bouton est inactif
-
+##PAGE LOADING
+elif st.session_state.page == 'loading':
+    
+    st.header(st.session_state.request)
+    print(st.session_state.user)
+    with st.spinner('Wait for it...'):
+        st.session_state.response = submit_request(st.session_state.request, st.session_state.user)
+        set_page('response')
+    st.rerun()
+    
 ## PAGE DES REPONSES ##
-elif st.session_state.request is not None :
 
-    header = st.container()
-    with header:
-        col1, col2, col3 = st.columns([1,3,1])
-        with col2:
-            # génération de l’en-tête
-            req_text = "Demandez à notre super robot de créer le programme de vos rêves !"
-            req_html = f'''
-            <p style="
-                margin-top: 64px;
-                margin-bottom: 32px; 
-                ext-align: center; 
-                ont-size: 22px;
-            ">{req_text}</p>'''
+elif st.session_state.page == 'response':
+    get_response(st.session_state.response)
+    st.button('reset', on_click=reset_response())
 
-    get_response(st.session_state.request)
-
-    def reset_request():
-        del(st.session_state.request)
-    st.button('nouvelle demande', on_click=reset_request())
-
+print('page : ', st.session_state.page)
 
 
