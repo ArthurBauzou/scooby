@@ -7,6 +7,20 @@ import streamlit as st
 
 from config.key import MONGODB_URL, API_KEY2
 
+data = {
+    "user": "arthur",    #optionnel
+    "request": "code un truc haha",
+    "code": [
+        "def truc truc",
+        "lolilol = 1 + 2"
+    ],
+    "cost": {
+        "tokens": 450,
+        "dollars": 20.5
+    },
+    "raw": {}
+}
+
 # def main():
 
 #     openai.api_key = API_KEY2
@@ -39,4 +53,4 @@ def main():
 
     res = code[0]['choices'][0]['message']['content']
 
-    st.write(res)
+    print(res)
