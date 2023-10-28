@@ -34,14 +34,24 @@ def get_response(req):
     # Filtrez les documents avec l'ID égal à req
     documents = collection.find({"_id": req}, {"request": 1, "raw.choices.message.content": 1}) 
     doc_list = list(documents)  # Convertissez le curseur en une liste
-    st.write(doc_list)
-    
-        
-    # Contenu de la variable fonction
-    fonction = "def add(a, b):\n    return a + b"
 
-    # Créer un éditeur de code
-    st.subheader("Éditeur de Code :")
-    code = st_ace(height=200, value=fonction, language='python', theme='pastel_on_dark', key="ace_editor")
-    
+    if doc_list:
+        # Obtenez le contenu brut de la première ligne
+        raw_content = doc_list[0].get("raw", {}).get("choices", [])[0].get("message", {}).get("content", "")
+
+        # Affichez le contenu
+        st.text(raw_content)
+    else:
+        st.write("Aucun document trouvé dans la collection pour l'ID donné.")
+
+    # Utilisez une expression régulière pour extraire le contenu entre ''' '''
+    prog = re.search(r"'''(.*?)'''", raw_content, re.DOTALL)
+
+    if prog:
+        prog_content = prog.group(1)  # Récupérez le contenu entre les triplets de guillemets simples
+        st.subheader("Éditeur de Code :")
+        code = st_ace(height=200, value=prog_content, language='python', theme='pastel_on_dark', key="ace_editor")
+    else:
+        st.warning("Aucun contenu entre ''' ''' trouvé.")
+
         
