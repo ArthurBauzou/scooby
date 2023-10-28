@@ -7,12 +7,12 @@ from modules.request import openai_request
 from modules.bdd import write_request
 
 #fonctions
-def dummy():
+def confirm_prompt():
     if request:
         st.session_state.request = request
         set_page('loading')
     else:
-        print('user : ', st.session_state.user)
+        print('no prompt')
 
 def reset_response():
     print('fire reset')
@@ -62,14 +62,16 @@ st.divider()
 if st.session_state.page == 'prompt' :
 
     request = st.text_area('Entrez la description d’un programme')
-    st.button('AU TRAVAIL, ESCLAVE ROBOT', on_click=dummy())
+    if st.button('AU TRAVAIL, ESCLAVE ROBOT'):
+        confirm_prompt()
+        st.rerun()
 
 ##PAGE LOADING
 elif st.session_state.page == 'loading':
     
     st.header(st.session_state.request)
     with st.spinner('Wait for it...'):
-        st.image(f'./static/copain ({rd.choice(range(1,8))}).gif')
+        st.image(f'./static/copain ({rd.choice(range(1,9))}).gif')
         st.session_state.response = submit_request(st.session_state.request, st.session_state.user)
         set_page('response')
     st.rerun()
@@ -77,9 +79,14 @@ elif st.session_state.page == 'loading':
 ## PAGE DES REPONSES ##
 
 elif st.session_state.page == 'response':
-    get_response(st.session_state.response)
-    st.button('reset', on_click=reset_response())
 
-print('page : ', st.session_state.page)
+    get_response(st.session_state.response)
+    st.divider()
+    if st.button('RESET'):
+        reset_response()
+        st.rerun()
+
+print('PAGE: ', st.session_state.page, ', USER: ', st.session_state.user)
+
 
 
