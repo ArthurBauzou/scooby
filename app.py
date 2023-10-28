@@ -1,5 +1,5 @@
 import streamlit as st
-import time
+import random as rd
 
 from modules.history import get_user_history
 from modules.response import get_response
@@ -56,6 +56,7 @@ with login:
 
 #TITLE
 st.title('Mon Copain Robot 💖')
+st.divider()
 
 ## PAGE DES REQUETES (ACCUEIL) ##
 if st.session_state.page == 'prompt' :
@@ -68,6 +69,7 @@ elif st.session_state.page == 'loading':
     
     st.header(st.session_state.request)
     with st.spinner('Wait for it...'):
+        st.image(f'./static/copain ({rd.choice(range(1,8))}).gif')
         st.session_state.response = submit_request(st.session_state.request, st.session_state.user)
         set_page('response')
     st.rerun()

@@ -1,4 +1,5 @@
 import openai
+
 from config.key import API_KEY
 
 openai.api_key = API_KEY
