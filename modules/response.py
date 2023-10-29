@@ -12,4 +12,12 @@ def get_response(id):
 
     resp = collection.find_one({"_id": ObjectId(id)})
     st.header(resp['request'])
-    st.write(resp['raw']['choices'][0]['message']['content'])
+
+    if len(resp["code"]) == 0 : st.error('aucun code n’a pu être généré')
+    else :
+        joined_code = "\n####\n".join(resp["code"])
+        codeblock = f'```{resp["lang"]}\n{joined_code}```'
+
+        st.success(f'langage : {resp["lang"]}')
+        st.write(codeblock)
+

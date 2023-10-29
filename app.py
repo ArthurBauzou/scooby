@@ -19,9 +19,17 @@ def reset_response():
     del(st.session_state.response)
     set_page('prompt')
 
-def submit_request(value, user):
-    response = openai_request(value)
-    inserted_id = write_request(value, response, user)
+def submit_request(request, user, chunks_counter):
+    stream = openai_request(request)
+
+    collected_messages = []
+    for chunk in stream:
+        chunk_message = chunk['choices'][0]['delta']
+        collected_messages.append(chunk_message)
+        chunks_counter.write(f'tokens reçus : {len(collected_messages)}')
+    response = ''.join([m.get('content', '') for m in collected_messages])
+
+    inserted_id = write_request(request, response, user)
     return inserted_id
 
 def set_page(state):
@@ -71,8 +79,9 @@ elif st.session_state.page == 'loading':
     
     st.header(st.session_state.request)
     with st.spinner('Wait for it...'):
+        token_count = st.empty()
         st.image(f'./static/copain ({rd.choice(range(1,9))}).gif')
-        st.session_state.response = submit_request(st.session_state.request, st.session_state.user)
+        st.session_state.response = submit_request(st.session_state.request, st.session_state.user, token_count)
         set_page('response')
     st.rerun()
     
