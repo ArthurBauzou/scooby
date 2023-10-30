@@ -22,11 +22,11 @@ def write_request(req, res, user):
         "lang": language,
         "code": code,
         "raw": res,
-        "newcode": ''
+        "newcode": '',
+        "view": 'gpt'
     }
 
     insert = collection.insert_one(data)
-
     return insert.inserted_id
 
 
@@ -43,4 +43,9 @@ def save_newcode(id, newcode):
     if newcode == '' : return
     query = {'_id': id}
     insert = {'$set': {'newcode': newcode}}
+    collection.update_one(query, insert)
+
+def set_view(id, view):
+    query = {'_id': id}
+    insert = {'$set': {'view': view}}
     collection.update_one(query, insert)

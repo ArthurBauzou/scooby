@@ -31,5 +31,5 @@ def get_user_history(user):
         if date != doc["date"].strftime('%d/%m/%Y'):
             date = doc["date"].strftime('%d/%m/%Y')
             st.write(date)
-        if st.button(doc["request"], key=i):
-            get_post(doc['_id'])
+        st.button(doc["request"], key=i, on_click=get_post,args=[doc['_id']])
+            # get_post(doc['_id'])
