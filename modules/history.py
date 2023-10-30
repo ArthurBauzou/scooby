@@ -1,11 +1,6 @@
 import streamlit as st
-from pymongo import MongoClient, DESCENDING
 
-from config.key import MONGODB_URL
-
-client = MongoClient(MONGODB_URL)
-db = client.scoobyDB
-collection = db.requests
+from .bdd import get_user_posts
 
 def get_post(id):
     print('id sent: ', id)
@@ -14,7 +9,7 @@ def get_post(id):
 
 def get_user_history(user):
 
-    documents = collection.find({"user": user}).sort('date', DESCENDING)
+    documents = get_user_posts(user)
 
     buttonstyle = '''
     <style>

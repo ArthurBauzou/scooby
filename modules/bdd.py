@@ -1,6 +1,8 @@
-from pymongo import MongoClient
+from pymongo import MongoClient, DESCENDING
+from bson.objectid import ObjectId
 
 from config.key import MONGODB_URL
+from .commons import parsecode
 import datetime
 
 client = MongoClient(MONGODB_URL)
@@ -8,38 +10,7 @@ db = client.scoobyDB
 collection = db.requests
 
 
-def parsecode(raw:str) -> (str, list):
-    languages = [
-        'python', 
-        'javascript',
-        'c',
-        'c++',
-        'c#',
-        'php',
-        'java',
-        'sql'
-    ]
-
-    raw_list = raw.split('```')
-
-    language = ''
-    lang_found = False
-    code = []
-    for i, text in enumerate(raw_list):
-        
-        if i%2 == 0 : continue  # Recupérer uniquement les blocs de code (donc les elements impairs)
-
-        words = text.split()
-
-        if words[0] not in languages: continue  # vérifier que le langage est connu
-        if lang_found and words[0] != language : continue # verifier que c’est bien le même langage
-
-        lang_found = True
-        language = words[0]
-        code.append(text[len(language)+1:])
-
-    return language, code
-
+# ECRITURE NOUVEL OBJET DANS LA BASE
 def write_request(req, res, user):
 
     language, code = parsecode(res)
@@ -56,3 +27,13 @@ def write_request(req, res, user):
     insert = collection.insert_one(data)
 
     return insert.inserted_id
+
+
+# RECUPERER LES ID ET REQUEST D’UN UTILISATEUR SPECIFIQUE
+def get_user_posts(user):
+    res = collection.find({"user": user},{'request': 1, 'date':1}).sort('date', DESCENDING)
+    return res
+
+def get_response(id):
+    resp = collection.find_one({"_id": ObjectId(id)})
+    return resp

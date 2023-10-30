@@ -2,9 +2,9 @@ import streamlit as st
 import random as rd
 
 from modules.history import get_user_history
-from modules.response import get_response
+from modules.response import show_code_edit
 from modules.request import openai_request
-from modules.bdd import write_request
+from modules.bdd import write_request, get_response
 
 #fonctions
 def confirm_prompt():
@@ -59,7 +59,7 @@ with login:
     user = st.text_input('Entrez votre nom', st.session_state.user)
     if user:
         set_user(user)
-        st.header('Historique')
+        st.header(f'Historique de {st.session_state.user}')
         get_user_history(user)
 
 #TITLE
@@ -89,9 +89,15 @@ elif st.session_state.page == 'loading':
 
 elif st.session_state.page == 'response':
 
-    get_response(st.session_state.response)
+    resp = get_response(st.session_state.response)
+    st.header(resp['request'])
+
+    editor, raw = st.tabs(['Éditeur de code', 'Réponse de GPT'])
+    with editor: show_code_edit(resp)
+    with raw: st.write(resp['raw'])
+
     st.divider()
-    if st.button('RESET'):
+    if st.button('NOUVELLE REQUÊTE'):
         reset_response()
         st.rerun()
 
