@@ -32,7 +32,7 @@ custom_btns = [{
 
 def show_code_edit(resp):
 
-    if len(resp["code"]) == 0 :
+    if resp["code"] == '' :
         st.error('I’M SORRY DAVE, I’M AFRAID I CAN’T DO THAT')
     else :
         st.success(f'langage  :  {resp["lang"]}')

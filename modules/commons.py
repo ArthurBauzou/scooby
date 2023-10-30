@@ -12,7 +12,8 @@ def parsecode(raw:str) -> (str, str):
 
     comments = {
         'python': '####',
-        'javascript': '////'
+        'javascript': '////',
+        'sql': '----'
     }
 
     raw_list = raw.split('```')
@@ -20,6 +21,7 @@ def parsecode(raw:str) -> (str, str):
     language = ''
     lang_found = False
     code = []
+    joined_code = ''
     for i, text in enumerate(raw_list):
         
         if i%2 == 0 : continue  # Recupérer uniquement les blocs de code (donc les elements impairs)

@@ -4,7 +4,7 @@ from config.key import API_KEY
 
 openai.api_key = API_KEY
 
-def openai_request(prompt, max_t=400):
+def openai_request(prompt, max_t=600):
 
     response = openai.ChatCompletion.create(
         model = 'gpt-3.5-turbo',
@@ -12,7 +12,7 @@ def openai_request(prompt, max_t=400):
             # {'role': 'system', 'content': preprompt },
             {'role': 'user', 'content': prompt}
             ],
-        temperature=0,
+        temperature=1,
         stream=True,
         max_tokens= max_t
     )
