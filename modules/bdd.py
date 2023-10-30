@@ -21,7 +21,8 @@ def write_request(req, res, user):
         "request": req,
         "lang": language,
         "code": code,
-        "raw": res
+        "raw": res,
+        "newcode": ''
     }
 
     insert = collection.insert_one(data)
@@ -37,3 +38,9 @@ def get_user_posts(user):
 def get_response(id):
     resp = collection.find_one({"_id": ObjectId(id)})
     return resp
+
+def save_newcode(id, newcode):
+    if newcode == '' : return
+    query = {'_id': id}
+    insert = {'$set': {'newcode': newcode}}
+    collection.update_one(query, insert)

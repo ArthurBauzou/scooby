@@ -1,4 +1,4 @@
-def parsecode(raw:str) -> (str, list):
+def parsecode(raw:str) -> (str, str):
     languages = [
         'python', 
         'javascript',
@@ -9,6 +9,11 @@ def parsecode(raw:str) -> (str, list):
         'java',
         'sql'
     ]
+
+    comments = {
+        'python': '####',
+        'javascript': '////'
+    }
 
     raw_list = raw.split('```')
 
@@ -28,4 +33,6 @@ def parsecode(raw:str) -> (str, list):
         language = words[0]
         code.append(text[len(language)+1:])
 
-    return language, code
+        joined_code = f"\n{comments[language]}\n\n".join(code)
+
+    return language, joined_code
