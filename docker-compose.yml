@@ -1,0 +1,36 @@
+version: '3'
+services:
+  mongodb:
+    build: 
+      context: .
+      dockerfile: Dockerfile-scoobymongodb
+    container_name: scoobymongodb
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=admin
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      - mongodb_data:/data/db
+    command: mongod --tlsMode requireTLS --tlsCertificateKeyFile /etc/ssl/certs/mongodb.pem --tlsCAFile /etc/ssl/certs/ca.pem
+    networks:
+      - scoobyapp_net
+  python_app:
+    build:
+      context: .
+      dockerfile: Dockerfile-scoobyapp
+    container_name: scoobyapp
+    ports:
+      - "8502:8501"
+    environment:
+      - API_KEY=${MY_KEY}
+      - MONGODB_URL=${MY_URL}
+    networks:
+      - scoobyapp_net
+    depends_on:
+      - mongodb
+volumes:
+  mongodb_data:
+networks:
+  scoobyapp_net:

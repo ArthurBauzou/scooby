@@ -1,0 +1,6 @@
+FROM mongo
+
+COPY install/mongod.conf /etc/mongod.conf
+COPY install/certs/ca.pem /etc/ssl/certs/ca.pem
+COPY install/certs/mongodb.pem /etc/ssl/certs/mongodb.pem
+COPY install/init-mongo.js /docker-entrypoint-initdb.d/init-mongo.js
