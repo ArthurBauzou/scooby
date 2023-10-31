@@ -34,7 +34,7 @@ def show_code_edit(resp):
         if editor['type'] == "submit" and len(editor['id']) != 0:
             
             old_stdout = sys.stdout
-            new_stdout = StringIO()
+            new_stdout = StringIO(newline='\n')
             sys.stdout = new_stdout
 
             try:
